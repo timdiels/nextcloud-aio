@@ -14,6 +14,7 @@ EXPOSE 8443
 
 COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY --from=docker /usr/local/bin/docker /usr/local/bin/docker
+COPY --from=repo . /var/www/docker-aio
 
 WORKDIR /var/www/docker-aio
 
@@ -66,8 +67,9 @@ RUN set -ex; \
     wget https://getcomposer.org/installer -O - | php -- --install-dir=/usr/local/bin --filename=composer; \
     chmod +x /usr/local/bin/composer; \
     cd /var/www/docker-aio; \
-    git clone https://github.com/nextcloud-releases/all-in-one.git --depth 1 .; \
     find ./ -maxdepth 1 -mindepth 1 -not -path ./php -not -path ./community-containers -exec rm -r {} \; ; \
+    sed -i 's|$imageName = '"'nextcloud/all-in-one'|return false|" /var/www/docker-aio/php/src/Docker/DockerActionManager.php ; \
+    sed -i 's|nextcloud/aio-borgbackup|aio-borgbackup|' /var/www/docker-aio/php/containers.json ; \
     chown www-data:www-data -R /var/www/docker-aio; \
     cd php; \
     sudo -u www-data composer install --no-dev; \
