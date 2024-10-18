@@ -7,7 +7,7 @@ ENV PHP_MAX_TIME=3600
 ENV SOURCE_LOCATION=/usr/src/nextcloud
 
 # AIO settings start # Do not remove or change this line!
-ENV NEXTCLOUD_VERSION=29.0.4
+ENV NEXTCLOUD_VERSION=29.0.8
 ENV AIO_TOKEN=123456
 ENV AIO_URL=localhost
 # AIO settings end # Do not remove or change this line!
@@ -78,10 +78,10 @@ RUN set -ex; \
     \
 # pecl will claim success even if one install fails, so we need to perform each install separately
     pecl install igbinary-3.2.16; \ 
-    pecl install APCu-5.1.23; \
-    pecl install memcached-3.2.0 \
+    pecl install APCu-5.1.24; \
+    pecl install memcached-3.3.0 \
         --configureoptions 'enable-memcached-igbinary="yes"'; \
-    pecl install redis-6.0.2 \
+    pecl install redis-6.1.0 \
         --configureoptions 'enable-redis-igbinary="yes" enable-redis-zstd="yes" enable-redis-lz4="yes"'; \
     pecl install imagick-3.7.0; \
     \
